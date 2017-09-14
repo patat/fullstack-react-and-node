@@ -10,6 +10,15 @@ const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 const Survey = mongoose.model('surveys');
 
 module.exports = app => {
+  app.delete('/api/surveys/:surveyID', requireLogin, async (req, res) => {
+    try {
+      const deleted = await Survey.findByIdAndRemove(req.params.surveyID);
+      res.send(req.user);
+    } catch (err) {
+      res.status(422).send(err);
+    }
+  });
+
   app.get('/api/surveys', requireLogin, async (req, res) => {
     const surveys = await Survey.find({ _user: req.user.id }).select({
       recipients: false,
