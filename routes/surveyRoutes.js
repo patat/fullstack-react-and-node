@@ -13,7 +13,7 @@ module.exports = app => {
   app.delete('/api/surveys/:surveyID', requireLogin, async (req, res) => {
     try {
       const deleted = await Survey.findByIdAndRemove(req.params.surveyID);
-      res.send(req.user);
+      res.send(deleted);
     } catch (err) {
       res.status(422).send(err);
     }
